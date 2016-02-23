@@ -1,16 +1,46 @@
 {% extends 'blog/base.html' %}
-
 {% block content %}
-    <div class="post">
+<div class="container">
+    <div class="col-md-8 art-blk1">
+
+        <h1 class="art-head">{{ post.title }}</h1>
+        <div class="row art-fea" style="background:url('{{ post.image.url }}');background-size:cover;height:400px"></div>
         {% if post.published_date %}
-            <div class="date">
-                {{ post.published_date }}
-            </div>
+        <div class="date">
+            {{ post.published_date }}
+        </div>
         {% endif %}
         {% if user.is_authenticated %}
-    		<a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-		{% endif %}
-        <h1>{{ post.title }}</h1>
-        <p>{{ post.text|linebreaks }}</p>
+        <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+        {% endif %}
+        <div class="row art-det">
+            <p>{{ post.text|safe }}</p>
+        </div>
+        <div class="row">
+            <h4>Author: {{ post.author }}</h4>
+        </div>
     </div>
+    {% include 'blog/sidebar.html' %}
+</div>
+<div class="container">
+    <div class="side-head">
+        <h2>Related Articles</h2>
+    </div>
+    {% for post in spost %}
+    <div class="col-md-12 list-blk">
+        <div class="col-md-3" style="background:url('{{ post.image.url }}');background-size:cover;height:185px"></div>
+        <div class="post col-md-9">
+            <div class="date">
+                <p>published: {{ post.published_date }}</p>
+            </div>
+            <h1><a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a></h1>
+            <p>{{ post.text|linebreaks|truncatechars:250 }}</p>
+            <small>Author: {{ post.author}}</small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block footer %}
+{% include 'blog/footer.html' %}
 {% endblock %}

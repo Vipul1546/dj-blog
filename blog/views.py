@@ -4,16 +4,22 @@ from .models import News
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 from .forms import PostForm
+from django.template.defaultfilters import slugify
 
-# Create your views here.
+
+# Create your views here. itle_slug = slugify(Post.objects.values('title'));
 def post_list(request):
-	posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+	posts = Post.get_latest_items()
 	newss = News.objects.order_by('?')[:2]
 	return render(request, 'blog/post_list.html', {'posts': posts, 'newss': newss})
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+#title="-".join(title.split())
+def post_detail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    spost = Post.get_latest_items(except_ids = [post.id])
+    mpost = Post.objects.order_by('?')
+    return render(request, 'blog/post_detail.html', {'post': post,'spost': spost,'mpost': mpost})
+
 
 def post_new(request):
     if request.method == "POST":
