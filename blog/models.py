@@ -5,12 +5,24 @@ from django.db.models.signals import post_save
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 
+
+class Category(models.Model):
+  Name = models.CharField(max_length=200)
+  Description = models.CharField(max_length=2000)
+
+  class Meta:
+    verbose_name_plural = "Categories"
+
+  def __unicode__(self):
+    return self.Name
+
 # Create your models here.
 class Post(models.Model):
   author = models.ForeignKey('auth.User')
   title = models.CharField(max_length=200)
   text =  models.TextField()
   image = models.ImageField(upload_to='images',null=True)
+  art_category = models.ManyToManyField(Category)
   created_date = models.DateTimeField(
       default=timezone.now)
   published_date = models.DateTimeField(
@@ -48,6 +60,7 @@ class News(models.Model):
 
   class Meta:
     verbose_name_plural = "News"
+
 
 
 def get_in_list(data, attribute):
