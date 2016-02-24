@@ -1,5 +1,6 @@
 
 {% block content %}
+{% load cat_tag %}
 <div class="col-md-4">
 <div class="col-md-12 side-blk">
 <div class="side-head">
@@ -13,7 +14,7 @@
 					</div>
 					<div class="col-md-8">
 						<h4>
-							<a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a>
+							<a href="{% url 'post_detail' slug=post.slug art_category__Name=post.id|cat_n%}">{{ post.title }}</a>
 						</h4>
 					</div>
 					<!-- <div class="col-md-4" style="bottom:-27px;color:grey">
@@ -37,7 +38,7 @@
 					</div>
 					<div class="col-md-8">
 						<h4>
-							<a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a>
+							<a href="{% url 'post_detail' slug=post.slug art_category__Name=post.id|cat_n%}">{{ post.title }}</a>
 						</h4>
 					</div>
 					<!-- <div class="col-md-4" style="bottom:-27px;color:grey">

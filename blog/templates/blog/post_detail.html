@@ -1,10 +1,17 @@
 {% extends 'blog/base.html' %}
 {% block content %}
+{% load cat_tag %}
 <div class="container">
     <div class="col-md-8 art-blk1">
-
-        <h1 class="art-head">{{ post.title }}</h1>
-        <div class="row art-fea" style="background:url('{{ post.image.url }}');background-size:cover;height:400px"></div>
+    <div class="col-md-12 art-hd-blk">
+            <div class="col-md-2">
+                <span class="art-cat">{% cat_name post.id %}</span>
+            </div>
+            <div class="col-md-10">
+                <h1 class="art-head">{{ post.title }}</h1>
+            </div>
+        </div>
+        <div class="row art-fea" style="background:url('{{ post.image.url }}');background-size:cover;height:500px"></div>
         {% if post.published_date %}
         <div class="date">
             {{ post.published_date }}
@@ -33,8 +40,8 @@
             <div class="date">
                 <p>published: {{ post.published_date }}</p>
             </div>
-            <h1><a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a></h1>
-            <p>{{ post.text|linebreaks|truncatechars:250 }}</p>
+            <h1><a href="{% url 'post_detail' slug=post.slug art_category__Name=post.id|cat_n%}">{{ post.title }}</a></h1>
+            <p>{{ post.text|striptags|linebreaks|truncatechars:250 }}</p>
             <small>Author: {{ post.author}}</small>
         </div>
     </div>

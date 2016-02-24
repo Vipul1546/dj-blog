@@ -1,32 +1,44 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-<div class="row" style="text-align:center;padding-bottom:50px">
+{% load cat_tag %}
+<div class="row news-sec">
+	<div class="col-md-3 news-hd">
+		<h1>DAILY NEWS</h1>
+	</div>
 	{% for newsl in newss %}
-	<div class="col-md-4 col-md-offset-1" style="min-height: 70px;padding:5px; border-bottom:1px solid grey">{{ newsl.news_detail }}
+	<div class="col-md-3 col-md-offset-1" style="min-height: 70px;padding:5px; border-bottom:1px solid grey">{{ newsl.news_detail }}
 		<div style="text-align: right; font-size: 10px; position: absolute; bottom: 0px; right: 10px;" class="col-md-12">
 			<span>Source:- {{ newsl.source }}</span>
 		</div>
 	</div>
 	{% endfor %}
 </div>
+<div class="row cat-blk">
+		<ul>
+			{% for cat in category_l %}
+			<li><a href="{% url 'cat_post' art_category__Name=cat.Name %}">{{ cat.Name }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
 {% for post in posts %}
 <div class="col-md-12 list-blk">
 	<div class="col-md-3" style="background:url('{{ post.image.url }}');background-size:cover;height:185px"></div>
 	<div class="post col-md-9">
-		<div class="date col-md-6">
-			<p>published: {{ post.published_date }}</p>
+		<div class="date col-md-10">
+			<p>{{ post.published_date }}</p>
 		</div>
-		<div class="cat col-md-6">
-			<p>{{ p_id }}</p>
+		<div class="cat col-md-2">
+
+			<p><a href="{% url 'cat_post' art_category__Name=post.id|cat_n %}">{% cat_name post.id %}</a></p>
 		</div>
-		<h1><a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a></h1>
+		<h1><a href="{% url 'post_detail' slug=post.slug art_category__Name=post.id|cat_n%}">{{ post.title }}</a></h1>
 		<p>{{ post.text|striptags|linebreaks|truncatechars:250 }}</p>
 		<small>Author: {{ post.author}}</small>
 	</div>
 </div>
 {% endfor %}
-{% endblock %}
 
+{% endblock %}
 {% block footer %}
 {% include 'blog/footer.html' %}
 {% endblock %}

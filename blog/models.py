@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 
-
+###### --- Category Model
 class Category(models.Model):
   Name = models.CharField(max_length=200)
   Description = models.CharField(max_length=2000)
@@ -16,7 +16,7 @@ class Category(models.Model):
   def __unicode__(self):
     return self.Name
 
-# Create your models here.
+###### --- Post Model
 class Post(models.Model):
   author = models.ForeignKey('auth.User')
   title = models.CharField(max_length=200)
@@ -43,14 +43,14 @@ class Post(models.Model):
       posts = posts.filter(~Q(id__in=except_ids))
     return posts
 
-
+###### --- Slug
 def create_slug(sender, instance, **kwargs):
-  if slugify(instance.title) != instance.slug:
-    instance.slug = slugify(instance.title)
-    instance.save()
+   if slugify(instance.title) != instance.slug:
+     instance.slug = slugify(instance.title)
+     instance.save()
 post_save.connect(create_slug, sender=Post)
 
-
+###### --- News Model
 class News(models.Model):
   source = models.CharField(max_length=200)
   news_detail = models.TextField()
