@@ -42,14 +42,16 @@ INSTALLED_APPS = [
   'django.contrib.staticfiles',
   'blog',
   'django_extensions',
-  'tinymce',
+  'ckeditor',
+  'ckeditor_uploader',
 ]
+
 
 MIDDLEWARE_CLASSES = [
   'django.middleware.security.SecurityMiddleware',
   'django.contrib.sessions.middleware.SessionMiddleware',
   'django.middleware.common.CommonMiddleware',
-  'django.middleware.csrf.CsrfViewMiddleware',
+  #'django.middleware.csrf.CsrfViewMiddleware',
   'django.contrib.auth.middleware.AuthenticationMiddleware',
   'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
   'django.contrib.messages.middleware.MessageMiddleware',
@@ -80,6 +82,12 @@ WSGI_APPLICATION = 'myblog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+# MONGODB_DATABASES = {
+#     'default': {'name': 'blogfdb'}
+# }
+
+DATABASE_ROUTERS = ['fblog.routers.fblogRouter',]
+
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.mysql',
@@ -88,8 +96,18 @@ DATABASES = {
     'PASSWORD' : 'root',
     'HOST' : 'localhost',
     'PORT' : 3306,
+  },
+  'fblog_db': {
+  'ENGINE': 'django.db.backends.dummy',
+  'NAME': 'blogfdb',
+  'USER': '',
+  'PASSWORD': '',
+  'HOST': 'localhost',
+  'PORT': '27017',
+  'SUPPORTS_TRANSACTIONS': False
   }
 }
+
 
 
 # Password validation
@@ -130,10 +148,85 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = ''
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+
+CKEDITOR_UPLOAD_PATH = 'images/'
+
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_BROWSE_SHOW_DIRS = True
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono',
+        # 'skin': 'office2013',
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_YouCustomToolbarConfig': [
+            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'forms',
+             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+                       'HiddenField']},
+            '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+                       'Language']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            {'name': 'about', 'items': ['About']},
+            '/',  # put this to force next toolbar on new line
+            {'name': 'youcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+                'Preview',
+                'Maximize',
+
+            ]},
+        ],
+          'removePlugins': 'stylesheetparser',
+           'extraPlugins': 'codesnippet',
+        'toolbar': 'YouCustomToolbarConfig',  # put selected toolbar config here
+         'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+         'height': 291,
+         'width': '100%',
+         'filebrowserWindowHeight': 725,
+         'filebrowserWindowWidth': 940,
+         'toolbarCanCollapse': True,
+         'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join(
+            [
+                # you extra plugins here
+                'div',
+                'autolink',
+                'autoembed',
+                'embedsemantic',
+                'autogrow',
+                # 'devtools',
+                'widget',
+                'lineutils',
+                'clipboard',
+                'dialog',
+                'dialogui',
+                'elementspath'
+            ]),
+    }
+}
 
 
 TEMPLATES = [

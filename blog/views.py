@@ -19,12 +19,12 @@ def post_list(request):
 
 #title="-".join(title.split())
 def post_detail(request, slug , art_category__Name):
-    post = get_object_or_404(Post, slug=slug, art_category__Name=art_category__Name)
+    postd = get_object_or_404(Post, slug=slug, art_category__Name=art_category__Name)
     # p_id = Post.objects.filter(art_category__Name=art_category__Name)
     #cat = get_object_or_404(Category, id = id)
-    spost = Post.get_latest_items(except_ids = [post.id])[:5]
+    spost = Post.get_latest_items(except_ids = [postd.id])[:5]
     mpost = Post.objects.order_by('?')
-    return render(request, 'blog/post_detail.html', {'post': post,'spost': spost,'mpost': mpost})
+    return render(request, 'blog/post_detail.html', {'post': postd,'spost': spost,'mpost': mpost})
 
 def cat_post(request, art_category__Name):
     p_id = Post.objects.filter(art_category__Name=art_category__Name).values()

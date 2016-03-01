@@ -5,6 +5,9 @@ from django.db.models.signals import post_save
 from django.template.defaultfilters import slugify
 from django.db.models import Q
 
+
+# def get_upload_file_name(instance, filename):
+#     return "uploaded_files/%s_%s" %(str(time()).replace('.','_'), filename)
 ###### --- Category Model
 class Category(models.Model):
   Name = models.CharField(max_length=200)
@@ -65,3 +68,9 @@ class News(models.Model):
 
 def get_in_list(data, attribute):
   return map(lambda x: x[attribute], data)
+
+
+  ##queries
+  ## 1. post authr nd imge url not working in cat page
+  ## 2. slug error on same title
+  ##

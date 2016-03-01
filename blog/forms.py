@@ -1,7 +1,7 @@
 from django import forms
-from django.db.models import get_model
+#from django.db.models import get_model
 from django.contrib.auth.models import User
-from blog.widgets import AdvancedEditor
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from blog.models import Post
 from django.db import models
 from django.utils import timezone
@@ -9,7 +9,7 @@ from django.utils import timezone
 class PostForm(forms.ModelForm):
   author = models.ForeignKey('auth.User')
   title = forms.CharField(max_length=200)
-  text = forms.CharField(widget=AdvancedEditor())
+  text = forms.CharField(widget=CKEditorUploadingWidget())
   image = models.ImageField(upload_to='images',null=True)
   created_date = models.DateTimeField(
       default=timezone.now)

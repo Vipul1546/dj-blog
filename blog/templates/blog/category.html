@@ -12,13 +12,12 @@
 </div>
 {% for post in p_id %}
 <div class="col-md-12 list-blk">
-  <div class="col-md-3" style="background:url('{{ post.image.url }}');background-size:cover;height:185px"></div>
+  <div class="col-md-3" style="background:url('/media/{{ post.image}}');background-size:cover;height:185px"></div>
   <div class="post col-md-9">
     <div class="date col-md-10">
       <p>{{ post.published_date }}</p>
     </div>
     <div class="cat col-md-2">
-
       <p>{% cat_name post.id %}</p>
     </div>
     <h1><a href="{% url 'post_detail' slug=post.slug art_category__Name=post.id|cat_n%}">{{ post.title }}</a></h1>
