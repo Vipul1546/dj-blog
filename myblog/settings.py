@@ -41,6 +41,7 @@ INSTALLED_APPS = [
   'django.contrib.messages',
   'django.contrib.staticfiles',
   'blog',
+  'fblog',
   'django_extensions',
   'ckeditor',
   'ckeditor_uploader',
@@ -85,8 +86,7 @@ WSGI_APPLICATION = 'myblog.wsgi.application'
 # MONGODB_DATABASES = {
 #     'default': {'name': 'blogfdb'}
 # }
-
-DATABASE_ROUTERS = ['fblog.routers.fblogRouter',]
+DATABASE_ROUTERS = ['fblog.routers.fblogRouter']
 
 DATABASES = {
   'default': {
@@ -98,16 +98,19 @@ DATABASES = {
     'PORT' : 3306,
   },
   'fblog_db': {
-  'ENGINE': 'django.db.backends.dummy',
-  'NAME': 'blogfdb',
-  'USER': '',
-  'PASSWORD': '',
-  'HOST': 'localhost',
-  'PORT': '27017',
-  'SUPPORTS_TRANSACTIONS': False
+    'ENGINE': 'django.db.backends.dummy',
   }
 }
 
+from mongoengine import register_connection
+
+MONGO_DATABASE_NAME = 'dbfblog'
+
+MONGO_DATABASE_OPTIONS = {
+    'host': '127.0.0.1',
+    'port': 27017,
+    }
+register_connection('default', MONGO_DATABASE_NAME, **MONGO_DATABASE_OPTIONS)
 
 
 # Password validation
